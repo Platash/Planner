@@ -20,7 +20,7 @@ import planner.entity.User;
 
 
 @Repository("userDao")
-public class UserDao {
+public class UserDao extends AbstractDao<Integer, User> {
 
     @Autowired
     private SessionFactory sessionFactory;
