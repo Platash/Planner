@@ -1,0 +1,38 @@
+CREATE DATABASE planner;
+
+CREATE TABLE user (
+  id serial PRIMARY KEY,
+  creation_date TIMESTAMP NOT NULL,
+  modification_date TIMESTAMP,
+  login varchar(20) NOT NULL,
+  password varchar(60) NOT NULL,
+  name varchar (50)
+
+);
+
+CREATE TABLE task (
+  id serial PRIMARY KEY,
+  creation_date TIMESTAMP NOT NULL,
+  modification_date TIMESTAMP,
+  start_date TIMESTAMP,
+  end_date TIMESTAMP,
+  location VARCHAR (100),
+  description VARCHAR(100)
+);
+
+CREATE TABLE tag (
+  id serial PRIMARY KEY,
+  tag VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE task_user (
+  task_id INTEGER NOT NULL,
+  user_id INTEGER NOT NULL,
+  CONSTRAINT task_user PRIMARY KEY(task_id, user_id)
+);
+
+CREATE TABLE task_tag (
+  tag_id INTEGER NOT NULL,
+  task_id INTEGER NOT NULL,
+  CONSTRAINT task_tag PRIMARY KEY(tag_id, task_id)
+);
