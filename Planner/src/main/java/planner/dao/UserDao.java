@@ -16,11 +16,11 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import planner.entity.User;
+import planner.entity.UserData;
 
 
 @Repository("userDao")
-public class UserDao extends AbstractDao<Integer, User> {
+public class UserDao extends AbstractDao<Integer, UserData> {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -29,33 +29,33 @@ public class UserDao extends AbstractDao<Integer, User> {
         return sessionFactory.getCurrentSession();
     }
 
-    public void persist(User entity) {
+    public void persist(UserData entity) {
         getSession().persist(entity);
     }
 
-    public void delete(User entity) {
+    public void delete(UserData entity) {
         getSession().delete(entity);
     }
 
-    public void saveUser(User user) {
+    public void saveUser(UserData user) {
         persist(user);
     }
 
     public void deleteUserById(String id) {
-        Query query = getSession().createSQLQuery("delete from User where id = :id");
+        Query query = getSession().createSQLQuery("delete from \"user\" where id = :id");
         query.setString("id", id);
         query.executeUpdate();
     }
 
     @SuppressWarnings("unchecked")
-    public List<User> getAllUsers() {
+    public List<UserData> getAllUsers() {
         Criteria criteria = createEntityCriteria();
-        return (List<User>) criteria.list();
+        return (List<UserData>) criteria.list();
     }
 
-    public User getUserById(String id) {
+    public UserData getUserById(String id) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("id", id));
-        return (User) criteria.uniqueResult();
+        return (UserData) criteria.uniqueResult();
     }
 }

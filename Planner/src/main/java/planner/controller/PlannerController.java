@@ -4,23 +4,16 @@ package planner.controller;
  */
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Locale;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import planner.entity.Event;
-import planner.entity.User;
+import planner.entity.UserData;
 import planner.service.UserService;
 
 @Controller
@@ -30,17 +23,16 @@ public class PlannerController {
     @Autowired
     UserService service;
 
-
-    @RequestMapping(value = { "/new" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/" }, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
-        User user = new User();
+        UserData user = new UserData();
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
         return "registration";
     }
 
     @RequestMapping(value = { "/new" }, method = RequestMethod.POST)
-    public String saveUser(@Valid User user, BindingResult result,
+    public String saveUser(@Valid UserData user, BindingResult result,
                                ModelMap model) {
 
         if (result.hasErrors()) {
@@ -56,7 +48,7 @@ public class PlannerController {
 
     @RequestMapping(value = { "/edit-{id}-user" }, method = RequestMethod.GET)
     public String editEmployee(@PathVariable String id, ModelMap model) {
-        User user = service.getUserById(id);
+        UserData user = service.getUserById(id);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
         return "registration";

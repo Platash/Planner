@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import planner.dao.UserDao;
-import planner.entity.User;
+import planner.entity.UserData;
 
 @Service("userService")
 @Transactional
@@ -20,11 +20,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao dao;
 
-    public User getUserById(String id) {
+    public UserData getUserById(String id) {
         return dao.getUserById(id);
     }
 
-    public void saveUser(User user) {
+    public void saveUser(UserData user) {
         dao.saveUser(user);
     }
 
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         dao.deleteUserById(id);
     }
 
-    public List<User> getAllUsers() {
+    public List<UserData> getAllUsers() {
         return dao.getAllUsers();
     }
 

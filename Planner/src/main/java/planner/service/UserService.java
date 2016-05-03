@@ -6,17 +6,17 @@ package planner.service;
 
 
 import java.util.List;
-import planner.entity.User;
+import planner.entity.UserData;
 
 public interface UserService {
 
-    User getUserById(String id);
+    UserData getUserById(String id);
 
-    void saveUser(User user);
+    void saveUser(UserData user);
 
     void deleteUserById(String id);
 
-    List<User> getAllUsers();
+    List<UserData> getAllUsers();
 
 
 }
