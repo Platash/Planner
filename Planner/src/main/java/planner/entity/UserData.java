@@ -17,6 +17,8 @@ public class UserData {
     private String name;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id")
+    @SequenceGenerator(name = "user_id", sequenceName = "user_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;

@@ -26,25 +26,25 @@
 		<form:input type="hidden" path="id" id="id"/>
 		<table>
 			<tr>
-				<td><label for="name">Name: </label> </td>
-				<td><form:input path="name" id="name"/></td>
-				<td><form:errors path="name" cssClass="error"/></td>
-		    </tr>
-	    
-			<tr>
 				<td><label for="login">login: </label> </td>
 				<td><form:input path="login" id="login"/></td>
 				<td><form:errors path="login" cssClass="error"/></td>
+		    </tr>
+	    
+			<tr>
+				<td><label for="password">password: </label> </td>
+				<td><form:input path="password" id="password"/></td>
+				<td><form:errors path="password" cssClass="error"/></td>
 		    </tr>
 
 			<tr>
 				<td colspan="3">
 					<c:choose>
 						<c:when test="${edit}">
-							<input type="submit" value="Update"/>
+							<input type="submit" value="update"/>
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Register"/>
+							<input type="submit" value="register"/>
 						</c:otherwise>
 					</c:choose>
 				</td>

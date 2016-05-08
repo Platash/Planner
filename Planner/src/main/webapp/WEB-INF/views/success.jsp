@@ -8,11 +8,10 @@
 <title>Registration Confirmation Page</title>
 </head>
 <body>
-	message : ${success}
 	<br/>
 	<br/>
-	Go back to <a href="<c:url value='/list' />">List of All Users</a>
-	
+	<div>Registration successful.</div>
+
 </body>
 
 </html>

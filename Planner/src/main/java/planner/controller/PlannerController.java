@@ -14,14 +14,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import planner.entity.UserData;
+import planner.service.TaskService;
 import planner.service.UserService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class PlannerController {
 
     @Autowired
-    UserService service;
+    UserService userService;
+
+    @Autowired
+    TaskService taskService;
 
     @RequestMapping(value = { "/" }, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
@@ -31,16 +37,12 @@ public class PlannerController {
         return "registration";
     }
 
-    @RequestMapping(value = { "/new" }, method = RequestMethod.POST)
-    public String saveUser(@Valid UserData user, BindingResult result,
-                               ModelMap model) {
-
+    @RequestMapping(value = { "/" }, method = RequestMethod.POST)
+    public String saveUser(@Valid UserData user, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             return "registration";
         }
-
-        service.saveUser(user);
-
+        userService.addUser(user);
         model.addAttribute("success", "User " + user.getName() + " registered successfully");
         return "success";
     }
@@ -48,17 +50,28 @@ public class PlannerController {
 
     @RequestMapping(value = { "/edit-{id}-user" }, method = RequestMethod.GET)
     public String editEmployee(@PathVariable String id, ModelMap model) {
-        UserData user = service.getUserById(id);
+        UserData user = userService.getUserById(id);
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
         return "registration";
     }
 
+    @RequestMapping(value = { "/users" }, method = RequestMethod.GET)
+    public String showAllUsers(ModelMap model) {
+        List users = userService.getAllUsers();
 
-    @RequestMapping(value = { "/delete-{id}-employee" }, method = RequestMethod.GET)
-    public String deleteUserById(@PathVariable String id) {
-        service.deleteUserById(id);
-        return "redirect:/list";
+        model.addAttribute("users", users);
+        model.addAttribute("edit", true);
+        return "users";
+    }
+
+    @RequestMapping(value = { "/tasks" }, method = RequestMethod.GET)
+    public String showAllTasks(ModelMap model) {
+        List tasks = taskService.getAllTasks();
+
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("edit", true);
+        return "tasks";
     }
 
 }

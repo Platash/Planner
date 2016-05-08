@@ -12,6 +12,8 @@ public class TagData {
     private String tag;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_id")
+    @SequenceGenerator(name = "tag_id", sequenceName = "tag_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;

@@ -16,8 +16,11 @@ public class TaskData {
     private Timestamp endDate;
     private String location;
     private String description;
+    private Integer ownerId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_id")
+    @SequenceGenerator(name = "task_id", sequenceName = "task_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     public Integer getId() {
         return id;
@@ -87,6 +90,16 @@ public class TaskData {
         this.description = description;
     }
 
+    @Basic
+    @Column(name = "owner_id", nullable = false)
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -119,4 +132,5 @@ public class TaskData {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
+
 }

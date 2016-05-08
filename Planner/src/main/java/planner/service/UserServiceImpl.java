@@ -4,6 +4,8 @@ package planner.service;
  * Created by Anna Platash on 4/16/16.
  */
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,9 @@ public class UserServiceImpl implements UserService {
         return dao.getUserById(id);
     }
 
-    public void saveUser(UserData user) {
-        dao.saveUser(user);
+    public void addUser(UserData user) {
+        user.setCreationDate(new Timestamp(new Date().getTime()));
+        dao.addUser(user);
     }
 
 

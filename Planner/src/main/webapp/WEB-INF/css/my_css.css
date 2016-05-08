@@ -1,0 +1,104 @@
+h1 {
+    font-family: courier;
+    color: #191a00;
+    font-size:200%;
+    text-align:right
+}
+
+#line_gray {
+    height: 60px;
+    background: #333300;
+}
+
+.shadow {
+    -webkit-box-shadow: 3px 3px 4px 4px #a9a9a9;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    3px 3px 4px 4px #a9a9a9;  /* Firefox 3.5 - 3.6 */
+    box-shadow:         3px 3px 4px 4px #a9a9a9;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+.main {
+    width: 900px;
+    min-height: 1000px;
+    background: white;
+    color: #2f2f2f;
+    position: relative;
+    margin-left:auto;
+    margin-right:auto;
+
+
+}
+.rounded_corner {
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.button {
+    -webkit-box-shadow: 0px 10px 5px -4px #3e7327;
+    box-shadow: 0px 10px 5px -4px #3e7327;
+    background-color:#668626;
+    -webkit-border-radius:4px;
+    border-radius:4px;
+    border:1px solid #2d3c11;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family: "Courier New", Courier, monospace;
+    font-size:25px;
+    font-weight:bold;
+    padding:19px 51px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #5b8a3c;
+}
+.button:hover {
+    background-color:#779f2d;
+}
+.button:active {
+    position:relative;
+    top:1px;
+}
+
+.dashed {
+    width:230px;
+    height:30px;
+    border:2px dashed #D1C7AC;
+}
+
+
+p {
+    font-size: 150%;
+    position: relative;
+    margin: 0 auto;
+    text-align: justify;
+    width: 600px;
+    font-family: "Courier New", Courier, monospace;
+}
+
+#container {
+    color: red;
+    font-size: 130%;
+    vertical-align: bottom;
+}
+
+table {
+    width:90%;
+    position: relative;
+    margin-left:auto;
+    margin-right:auto;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: center;
+}
+table#t01 tr:nth-child(even) {
+    background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+    background-color:#fff;
+}
+table#t01 th	{
+    background-color: black;
+    color: white;
+}

@@ -29,16 +29,12 @@ public class UserDao extends AbstractDao<Integer, UserData> {
         return sessionFactory.getCurrentSession();
     }
 
-    public void persist(UserData entity) {
+    public void addUser(UserData entity) {
         getSession().persist(entity);
     }
 
     public void delete(UserData entity) {
         getSession().delete(entity);
-    }
-
-    public void saveUser(UserData user) {
-        persist(user);
     }
 
     public void deleteUserById(String id) {
