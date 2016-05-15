@@ -4,6 +4,7 @@ package planner.controller;
  */
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import planner.entity.TaskData;
 import planner.entity.UserData;
 import planner.service.TaskService;
 import planner.service.UserService;
@@ -61,7 +63,6 @@ public class PlannerController {
         List users = userService.getAllUsers();
 
         model.addAttribute("users", users);
-        model.addAttribute("edit", true);
         return "users";
     }
 
@@ -70,8 +71,25 @@ public class PlannerController {
         List tasks = taskService.getAllTasks();
 
         model.addAttribute("tasks", tasks);
-        model.addAttribute("edit", true);
         return "tasks";
+    }
+
+    @RequestMapping(value = { "/newTask" }, method = RequestMethod.GET)
+    public String newTask(ModelMap model) {
+        TaskData task = new TaskData();
+        model.addAttribute("task", task);
+        model.addAttribute("edit", false);
+        return "newTask";
+    }
+
+    @RequestMapping(value = { "/newTask" }, method = RequestMethod.POST)
+    public String saveTask(@ModelAttribute("task") TaskData task, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            return "newTask";
+        }
+        taskService.addTask(task);
+        model.addAttribute("success", "User " + task.getId() + " registered successfully");
+        return "success";
     }
 
 }
