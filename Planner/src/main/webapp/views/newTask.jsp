@@ -24,9 +24,6 @@
     <script>
         $(function aaa() {
             $( "#date" ).datetimepicker();
-            //$( "#date" ).datepicker();
-
-            //$( "#date" ).bootstrapMaterialDatePicker({ weekStart : 0, time: false });
         });
 
 
@@ -39,8 +36,8 @@
                     endDateTextBox,
                     {
                         minInterval: (1000*60*60), // 1hr
-                        dateFormat: 'dd M yy',
-                        timeFormat: 'HH:mm',
+                        dateFormat: 'yy-mm-dd',
+                        timeFormat: 'HH:mm:ss',
                         start: {}, // start picker options
                         end: {} // end picker options
                     }
@@ -52,19 +49,34 @@
 </head>
 <body>
 
-<form:form method="POST" modelAttribute="task">
+<form:form method="POST" modelAttribute="taskForm">
 
 
     <table>
         <tr>
-            <td><label>date: </label> </td>
+            <td><label>Name: </label> </td>
+            <td><form:input path="name" id="name"/></td>
+            <td><form:errors path="name" cssClass="error"/></td>
+        </tr>
+        <tr>
+            <td><label>Start date: </label> </td>
             <td><form:input path="startDate" id="start"/></td>
             <td><form:errors path="startDate" cssClass="error"/></td>
         </tr>
         <tr>
-            <td><label>date: </label> </td>
+            <td><label>End date: </label> </td>
             <td><form:input path="endDate" id="end"/></td>
             <td><form:errors path="endDate" cssClass="error"/></td>
+        </tr>
+        <tr>
+            <td><label>Location: </label> </td>
+            <td><form:input path="location" id="location"/></td>
+            <td><form:errors path="location" cssClass="error"/></td>
+        </tr>
+        <tr>
+            <td><label>Tags separated by #: </label> </td>
+            <td><form:input path="tags" id="tags"/></td>
+            <td><form:errors path="tags" cssClass="error"/></td>
         </tr>
 
         <tr>

@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class TaskUserData {
     private Integer taskId;
     private Integer userId;
+    private String status;
 
     @Id
     @Column(name = "task_id", nullable = false)
@@ -50,5 +51,15 @@ public class TaskUserData {
         int result = taskId != null ? taskId.hashCode() : 0;
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "status", nullable = false, length = -1)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

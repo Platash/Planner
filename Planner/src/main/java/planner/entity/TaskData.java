@@ -17,6 +17,7 @@ public class TaskData {
     private String location;
     private String description;
     private Integer ownerId;
+    private String name;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_id")
@@ -100,6 +101,16 @@ public class TaskData {
         this.ownerId = ownerId;
     }
 
+    @Basic
+    @Column(name = "name", nullable = true, length = 50)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -132,5 +143,6 @@ public class TaskData {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
+
 
 }

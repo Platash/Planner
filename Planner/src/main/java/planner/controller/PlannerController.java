@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import planner.entity.TaskData;
 import planner.entity.UserData;
+import planner.formEntity.NewTaskForm;
 import planner.service.TaskService;
 import planner.service.UserService;
 
@@ -76,19 +77,19 @@ public class PlannerController {
 
     @RequestMapping(value = { "/newTask" }, method = RequestMethod.GET)
     public String newTask(ModelMap model) {
-        TaskData task = new TaskData();
-        model.addAttribute("task", task);
+        NewTaskForm taskForm = new NewTaskForm();
+        model.addAttribute("taskForm", taskForm);
         model.addAttribute("edit", false);
         return "newTask";
     }
 
     @RequestMapping(value = { "/newTask" }, method = RequestMethod.POST)
-    public String saveTask(@ModelAttribute("task") TaskData task, BindingResult result, ModelMap model) {
+    public String saveTask(@ModelAttribute("taskForm") NewTaskForm taskForm, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             return "newTask";
         }
-        taskService.addTask(task);
-        model.addAttribute("success", "User " + task.getId() + " registered successfully");
+        taskService.addTask(taskForm);
+        model.addAttribute("success", "User " + taskForm.getName() + " registered successfully");
         return "success";
     }
 

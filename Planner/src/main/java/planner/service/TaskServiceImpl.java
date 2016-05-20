@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import planner.dao.TaskDao;
 import planner.entity.TaskData;
+import planner.formEntity.NewTaskForm;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -25,6 +26,18 @@ public class TaskServiceImpl implements TaskService {
     public void addTask(TaskData task) {
         task.setCreationDate(new Timestamp(new Date().getTime()));
         dao.addTask(task);
+    }
+
+    public void addTask(NewTaskForm taskForm) {
+        TaskData taskData = new TaskData();
+        taskData.setCreationDate(new Timestamp(new Date().getTime()));
+        taskData.setName(taskForm.getName());
+        taskData.setDescription(taskForm.getDescription());
+        taskData.setLocation(taskForm.getLocation());
+        taskData.setStartDate(Timestamp.valueOf(taskForm.getStartDate()));
+        taskData.setEndDate(Timestamp.valueOf(taskForm.getEndDate()));
+        taskData.setOwnerId(3);
+        dao.addTask(taskData);
     }
 
     public void deleteTaskById(String id) {
