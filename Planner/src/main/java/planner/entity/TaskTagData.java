@@ -9,17 +9,17 @@ import javax.persistence.*;
 @Table(name = "task_tag", schema = "public", catalog = "planner")
 @IdClass(TaskTagDataPK.class)
 public class TaskTagData {
-    private Integer tagId;
+    private String tagName;
     private Integer taskId;
 
     @Id
-    @Column(name = "tag_id", nullable = false)
-    public Integer getTagId() {
-        return tagId;
+    @Column(name = "tag_name", nullable = false)
+    public String getTagName() {
+        return tagName;
     }
 
-    public void setTagId(Integer tagId) {
-        this.tagId = tagId;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 
     @Id
@@ -39,7 +39,7 @@ public class TaskTagData {
 
         TaskTagData that = (TaskTagData) o;
 
-        if (tagId != null ? !tagId.equals(that.tagId) : that.tagId != null) return false;
+        if (tagName != null ? !tagName.equals(that.tagName) : that.tagName != null) return false;
         if (taskId != null ? !taskId.equals(that.taskId) : that.taskId != null) return false;
 
         return true;
@@ -47,7 +47,7 @@ public class TaskTagData {
 
     @Override
     public int hashCode() {
-        int result = tagId != null ? tagId.hashCode() : 0;
+        int result = tagName != null ? tagName.hashCode() : 0;
         result = 31 * result + (taskId != null ? taskId.hashCode() : 0);
         return result;
     }

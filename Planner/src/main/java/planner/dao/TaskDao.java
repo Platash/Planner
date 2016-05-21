@@ -26,8 +26,10 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
         return sessionFactory.getCurrentSession();
     }
 
-    public void addTask(TaskData entity) {
+    public Integer addTask(TaskData entity) {
         getSession().persist(entity);
+        getSession().flush();
+        return entity.getId();
     }
 
     public void delete(TaskData entity) {

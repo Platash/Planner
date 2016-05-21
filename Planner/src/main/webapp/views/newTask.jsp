@@ -74,6 +74,11 @@
             <td><form:errors path="location" cssClass="error"/></td>
         </tr>
         <tr>
+            <td><label>Description: </label> </td>
+            <td><form:input path="description" id="description"/></td>
+            <td><form:errors path="description" cssClass="error"/></td>
+        </tr>
+        <tr>
             <td><label>Tags separated by #: </label> </td>
             <td><form:input path="tags" id="tags"/></td>
             <td><form:errors path="tags" cssClass="error"/></td>

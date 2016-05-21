@@ -8,17 +8,17 @@ import java.io.Serializable;
  * Created by Anna Platash on 5/8/16.
  */
 public class TaskTagDataPK implements Serializable {
-    private Integer tagId;
+    private String tagName;
     private Integer taskId;
 
-    @Column(name = "tag_id", nullable = false)
+    @Column(name = "tag_name", nullable = false)
     @Id
-    public Integer getTagId() {
-        return tagId;
+    public String getTagName() {
+        return tagName;
     }
 
-    public void setTagId(Integer tagId) {
-        this.tagId = tagId;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 
     @Column(name = "task_id", nullable = false)
@@ -38,7 +38,7 @@ public class TaskTagDataPK implements Serializable {
 
         TaskTagDataPK that = (TaskTagDataPK) o;
 
-        if (tagId != null ? !tagId.equals(that.tagId) : that.tagId != null) return false;
+        if (tagName != null ? !tagName.equals(that.tagName) : that.tagName != null) return false;
         if (taskId != null ? !taskId.equals(that.taskId) : that.taskId != null) return false;
 
         return true;
@@ -46,7 +46,7 @@ public class TaskTagDataPK implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = tagId != null ? tagId.hashCode() : 0;
+        int result = tagName != null ? tagName.hashCode() : 0;
         result = 31 * result + (taskId != null ? taskId.hashCode() : 0);
         return result;
     }

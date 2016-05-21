@@ -3,8 +3,12 @@ package planner.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import planner.dao.TagDao;
 import planner.dao.TaskDao;
+import planner.dao.TaskTagDao;
+import planner.entity.TagData;
 import planner.entity.TaskData;
+import planner.entity.TaskTagData;
 import planner.formEntity.NewTaskForm;
 
 import java.sql.Timestamp;
@@ -23,9 +27,15 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TaskDao dao;
 
+    @Autowired
+    private TaskTagDao taskTagDao;
+
+    @Autowired
+    private TagDao tagDao;
+
     public void addTask(TaskData task) {
         task.setCreationDate(new Timestamp(new Date().getTime()));
-        dao.addTask(task);
+        Integer taskId = dao.addTask(task);
     }
 
     public void addTask(NewTaskForm taskForm) {
@@ -37,7 +47,25 @@ public class TaskServiceImpl implements TaskService {
         taskData.setStartDate(Timestamp.valueOf(taskForm.getStartDate()));
         taskData.setEndDate(Timestamp.valueOf(taskForm.getEndDate()));
         taskData.setOwnerId(3);
-        dao.addTask(taskData);
+        Integer taskId = dao.addTask(taskData);
+        addTaskTags(taskForm.getTagsAsArray(), taskId);
+
+
+    }
+
+    private void addTaskTags(String[] tags, Integer taskId) {
+        for(int i = 0; i < tags.length; i++) {
+            String tag = tags[i];
+            if(tagDao.getTagByName(tag) == null) {
+                TagData tagData = new TagData();
+                tagData.setName(tag);
+                tagDao.addTag(tagData);
+            }
+            TaskTagData taskTagData = new TaskTagData();
+            taskTagData.setTagName(tag);
+            taskTagData.setTaskId(taskId);
+            taskTagDao.addTaskTag(taskTagData);
+        }
     }
 
     public void deleteTaskById(String id) {

@@ -13,7 +13,7 @@ public class NewTaskForm {
     private String description;
     private String name;
     private String tags;
-    private final String SEPARATOR = "#";
+    private final String SEPARATOR = ",";
 
     public String getStartDate() {
         return startDate;
