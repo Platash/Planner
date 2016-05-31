@@ -4,23 +4,27 @@ package planner.controller;
  */
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import planner.entity.TaskData;
 import planner.entity.UserData;
+import planner.formEntity.CalendarData;
 import planner.formEntity.NewTaskForm;
 import planner.service.TaskService;
 import planner.service.UserService;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/")
@@ -92,5 +96,45 @@ public class PlannerController {
         model.addAttribute("success", "User " + taskForm.getName() + " registered successfully");
         return "success";
     }
+
+    @RequestMapping(value = { "/cal" }, method = RequestMethod.GET)
+    public String showCal(ModelMap model) {
+        NewTaskForm taskForm = new NewTaskForm();
+        model.addAttribute("taskForm", taskForm);
+        model.addAttribute("edit", false);
+        return "calendar";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/cal/json", method = RequestMethod.GET, params = {"start", "end"})
+
+    public String loadTasks(@RequestParam(value = "start") String start,
+                            @RequestParam(value = "end") String end,
+                            HttpServletResponse response) throws Exception {
+
+        System.out.println(start);
+        System.out.println(end);
+
+        List<TaskData> taskDataList = taskService.getTasksFromInterval(start, end);
+        List<CalendarData> calendarDatas = new ArrayList<CalendarData>();
+        for(TaskData taskData: taskDataList) {
+            calendarDatas.add(new CalendarData(taskData));
+        }
+        String json = new Gson().toJson(calendarDatas);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        return json;
+    }
+
+    @RequestMapping(value = "/cal/saveTask", method = RequestMethod.POST)
+    @ResponseBody
+    public void saveTask(@RequestBody String jsonString, Principal principal) throws Exception {
+        Gson gson = new Gson();
+        NewTaskForm taskData = gson.fromJson(jsonString, NewTaskForm.class);
+        taskService.addTask(taskData);
+
+    }
+
+
 
 }

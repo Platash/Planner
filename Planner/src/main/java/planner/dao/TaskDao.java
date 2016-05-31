@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import planner.entity.TaskData;
 
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -59,6 +60,16 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("owner_id", owner_id));
         return (List<TaskData>) criteria.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<TaskData> getTasksFromInterval(String start, String end) {
+        String start_ = "\'" + start + "\'";
+        String end_ = "\'" + end + "\'";
+        Query query = getSession().createSQLQuery("select * from task where start_date <= " + end_ +
+                " AND end_date >= " + start_).addEntity(TaskData.class);
+
+        return query.list();
     }
 }
 

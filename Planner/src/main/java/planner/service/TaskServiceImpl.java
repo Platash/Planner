@@ -25,7 +25,7 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
-    private TaskDao dao;
+    private TaskDao taskDao;
 
     @Autowired
     private TaskTagDao taskTagDao;
@@ -35,7 +35,7 @@ public class TaskServiceImpl implements TaskService {
 
     public void addTask(TaskData task) {
         task.setCreationDate(new Timestamp(new Date().getTime()));
-        Integer taskId = dao.addTask(task);
+        Integer taskId = taskDao.addTask(task);
     }
 
     public void addTask(NewTaskForm taskForm) {
@@ -47,7 +47,7 @@ public class TaskServiceImpl implements TaskService {
         taskData.setStartDate(Timestamp.valueOf(taskForm.getStartDate()));
         taskData.setEndDate(Timestamp.valueOf(taskForm.getEndDate()));
         taskData.setOwnerId(3);
-        Integer taskId = dao.addTask(taskData);
+        Integer taskId = taskDao.addTask(taskData);
         addTaskTags(taskForm.getTagsAsArray(), taskId);
 
 
@@ -69,19 +69,23 @@ public class TaskServiceImpl implements TaskService {
     }
 
     public void deleteTaskById(String id) {
-        dao.deleteTaskById(id);
+        taskDao.deleteTaskById(id);
     }
 
     public TaskData getTaskById(String id) {
-        return dao.getTaskById(id);
+        return taskDao.getTaskById(id);
     }
 
     public List<TaskData> getTasksByUser(String id) {
-        return dao.getTasksByUser(id);
+        return taskDao.getTasksByUser(id);
     }
 
     public List<TaskData> getAllTasks() {
-        return dao.getAllTasks();
+        return taskDao.getAllTasks();
+    }
+
+    public List<TaskData> getTasksFromInterval(String start, String end) {
+        return taskDao.getTasksFromInterval(start, end);
     }
 
 }

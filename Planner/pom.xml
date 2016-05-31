@@ -4,10 +4,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.websystique.springmvc</groupId>
-    <artifactId>SpringHibernateExample</artifactId>
+    <artifactId>Planner</artifactId>
     <packaging>war</packaging>
     <version>1.0.0</version>
-    <name>SpringHibernateExample</name>
+    <name>Planner</name>
 
     <properties>
         <springframework.version>4.0.6.RELEASE</springframework.version>
@@ -19,6 +19,11 @@
         <dbunit.version>2.2</dbunit.version>
         <java.version>1.8</java.version>
         <springframework.version>4.0.6.RELEASE</springframework.version>
+        <jackson.version>2.6.3</jackson.version>
+        <logback.version>1.1.3</logback.version>
+        <jcl.slf4j.version>1.7.12</jcl.slf4j.version>
+        <jstl.version>1.2</jstl.version>
+        <servletapi.version>3.1.0</servletapi.version>
     </properties>
 
 
@@ -108,6 +113,31 @@
             <version>1.2</version>
         </dependency>
 
+        <!-- Need this for json to/from object -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${jcl.slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
 
         <!-- Testing dependencies -->
         <dependency>
@@ -139,6 +169,17 @@
             <artifactId>dbunit</artifactId>
             <version>${dbunit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
         </dependency>
 
     </dependencies>
