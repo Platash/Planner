@@ -5,12 +5,12 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import planner.entity.TaskData;
 
-
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -33,6 +33,10 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
         return entity.getId();
     }
 
+    public void updateTask(TaskData taskData) {
+        Query query = getSession().createSQLQuery("delete from task where id = :id");
+    }
+
     public void delete(TaskData entity) {
         getSession().delete(entity);
     }
@@ -49,7 +53,7 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
         return (List<TaskData>) criteria.list();
     }
 
-    public TaskData getTaskById(String id) {
+    public TaskData getTaskById(Integer id) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("id", id));
         return (TaskData) criteria.uniqueResult();

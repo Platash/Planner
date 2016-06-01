@@ -1,6 +1,7 @@
 package planner.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import planner.dao.TagDao;
@@ -9,7 +10,6 @@ import planner.dao.TaskTagDao;
 import planner.entity.TagData;
 import planner.entity.TaskData;
 import planner.entity.TaskTagData;
-import planner.formEntity.NewTaskForm;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -33,24 +33,17 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TagDao tagDao;
 
-    public void addTask(TaskData task) {
-        task.setCreationDate(new Timestamp(new Date().getTime()));
-        Integer taskId = taskDao.addTask(task);
-    }
-
-    public void addTask(NewTaskForm taskForm) {
-        TaskData taskData = new TaskData();
+    public void addTask(TaskData taskData) {
         taskData.setCreationDate(new Timestamp(new Date().getTime()));
-        taskData.setName(taskForm.getName());
-        taskData.setDescription(taskForm.getDescription());
-        taskData.setLocation(taskForm.getLocation());
-        taskData.setStartDate(Timestamp.valueOf(taskForm.getStartDate()));
-        taskData.setEndDate(Timestamp.valueOf(taskForm.getEndDate()));
         taskData.setOwnerId(3);
         Integer taskId = taskDao.addTask(taskData);
-        addTaskTags(taskForm.getTagsAsArray(), taskId);
+        if(!taskData.getTags().isEmpty()) {
+            addTaskTags(taskData.getTagsAsArray(), taskId);
+        }
+    }
 
-
+    public void updateTask(TaskData taskData) {
+        taskDao.updateTask(taskData);
     }
 
     private void addTaskTags(String[] tags, Integer taskId) {
@@ -72,12 +65,18 @@ public class TaskServiceImpl implements TaskService {
         taskDao.deleteTaskById(id);
     }
 
-    public TaskData getTaskById(String id) {
-        return taskDao.getTaskById(id);
+    public TaskData getTaskById(Integer id) {
+        TaskData taskData = taskDao.getTaskById(id);
+        taskData.setUrl();
+        return taskData;
     }
 
     public List<TaskData> getTasksByUser(String id) {
-        return taskDao.getTasksByUser(id);
+        List<TaskData> taskDataList = taskDao.getTasksByUser(id);
+        for(TaskData taskData: taskDataList) {
+            taskData.setUrl();
+        }
+        return taskDataList;
     }
 
     public List<TaskData> getAllTasks() {
@@ -85,7 +84,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     public List<TaskData> getTasksFromInterval(String start, String end) {
-        return taskDao.getTasksFromInterval(start, end);
+        List<TaskData> taskDataList = taskDao.getTasksFromInterval(start, end);
+        for(TaskData taskData: taskDataList) {
+            taskData.setUrl();
+        }
+        return taskDataList;
     }
 
 }

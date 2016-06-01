@@ -1,7 +1,6 @@
 package planner.service;
 
 import planner.entity.TaskData;
-import planner.formEntity.NewTaskForm;
 
 import java.util.List;
 
@@ -11,11 +10,11 @@ import java.util.List;
 public interface TaskService {
     void addTask(TaskData task);
 
-    void addTask(NewTaskForm taskForm);
+    void updateTask(TaskData task);
 
     void deleteTaskById(String id);
 
-    TaskData getTaskById(String id);
+    TaskData getTaskById(Integer id);
 
     List<TaskData> getTasksByUser(String id);
 

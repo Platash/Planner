@@ -26,8 +26,6 @@
         $(function aaa() {
             $( "#date" ).datetimepicker();
         });
-
-
         $(function bbb() {
             var startDateTextBox = $('#start');
             var endDateTextBox = $('#end');
@@ -44,8 +42,6 @@
                     }
             );
         });
-
-
     </script>
 </head>
 <body>
@@ -62,47 +58,47 @@
 </nav>
 <br>
 <div style="margin-left:25%">
-<form:form method="POST" modelAttribute="taskData">
-    <table>
-        <tr>
-            <td><label>Name: </label> </td>
-            <td><form:input path="title" id="title"/></td>
-            <td><form:errors path="title" cssClass="error"/></td>
-        </tr>
-        <tr>
-            <td><label>Start date: </label> </td>
-            <td><form:input path="start" id="start"/></td>
-            <td><form:errors path="start" cssClass="error"/></td>
-        </tr>
-        <tr>
-            <td><label>End date: </label> </td>
-            <td><form:input path="end" id="end"/></td>
-            <td><form:errors path="end" cssClass="error"/></td>
-        </tr>
-        <tr>
-            <td><label>Location: </label> </td>
-            <td><form:input path="location" id="location"/></td>
-            <td><form:errors path="location" cssClass="error"/></td>
-        </tr>
-        <tr>
-            <td><label>Description: </label> </td>
-            <td><form:input path="description" id="description"/></td>
-            <td><form:errors path="description" cssClass="error"/></td>
-        </tr>
-        <tr>
-            <td><label>Tags separated by #: </label> </td>
-            <td><form:input path="tags" id="tags"/></td>
-            <td><form:errors path="tags" cssClass="error"/></td>
-        </tr>
+    <form:form method="POST" modelAttribute="taskData">
+        <table>
+            <tr>
+                <td><label>Name: </label> </td>
+                <td><form:input path="title" id="title" value="${taskData.title}"/></td>
+                <td><form:errors path="title" cssClass="error"/></td>
+            </tr>
+            <tr>
+                <td><label>Start date: </label> </td>
+                <td><form:input path="start" id="start" value="${taskData.start}"/></td>
+                <td><form:errors path="start" cssClass="error"/></td>
+            </tr>
+            <tr>
+                <td><label>End date: </label> </td>
+                <td><form:input path="end" id="end" value="${taskData.end}"/></td>
+                <td><form:errors path="end" cssClass="error"/></td>
+            </tr>
+            <tr>
+                <td><label>Location: </label> </td>
+                <td><form:input path="location" id="location"/></td>
+                <td><form:errors path="location" cssClass="error"/></td>
+            </tr>
+            <tr>
+                <td><label>Description: </label> </td>
+                <td><form:input path="description" id="description"/></td>
+                <td><form:errors path="description" cssClass="error"/></td>
+            </tr>
+            <tr>
+                <td><label>Tags separated by #: </label> </td>
+                <td><form:input path="tags" id="tags"/></td>
+                <td><form:errors path="tags" cssClass="error"/></td>
+            </tr>
 
-        <tr>
-            <td colspan="3">
-                <input type="submit" value="submit"/>
+            <tr>
+                <td colspan="3">
+                    <input type="submit" value="submit"/>
 
-            </td>
-        </tr>
-    </table>
-</form:form>
+                </td>
+            </tr>
+        </table>
+    </form:form>
 </div>
 <br>
 <div class="w3-container w3-green">

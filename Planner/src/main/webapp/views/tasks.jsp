@@ -23,8 +23,8 @@
     <c:forEach items="${tasks}" var="task">
         <tr>
             <td>${task.id}</td>
-            <td>${task.startDate}</td>
-            <td>${task.endDate}</td>
+            <td>${task.start}</td>
+            <td>${task.end}</td>
             <td>${task.location}</td>
             <td>${task.description}</td>
 

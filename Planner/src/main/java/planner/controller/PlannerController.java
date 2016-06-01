@@ -15,8 +15,8 @@ import org.springframework.validation.BindingResult;
 
 import planner.entity.TaskData;
 import planner.entity.UserData;
-import planner.formEntity.CalendarData;
-import planner.formEntity.NewTaskForm;
+//import planner.formEntity.CalendarData;
+//import planner.formEntity.NewTaskForm;
 import planner.service.TaskService;
 import planner.service.UserService;
 
@@ -81,27 +81,25 @@ public class PlannerController {
 
     @RequestMapping(value = { "/newTask" }, method = RequestMethod.GET)
     public String newTask(ModelMap model) {
-        NewTaskForm taskForm = new NewTaskForm();
-        model.addAttribute("taskForm", taskForm);
+        TaskData taskData = new TaskData();
+        model.addAttribute("taskData", taskData);
         model.addAttribute("edit", false);
         return "newTask";
     }
 
     @RequestMapping(value = { "/newTask" }, method = RequestMethod.POST)
-    public String saveTask(@ModelAttribute("taskForm") NewTaskForm taskForm, BindingResult result, ModelMap model) {
+    public String saveTask(@ModelAttribute("taskData") TaskData taskData, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             return "newTask";
         }
-        taskService.addTask(taskForm);
-        model.addAttribute("success", "User " + taskForm.getName() + " registered successfully");
+        taskService.addTask(taskData);
+        model.addAttribute("success", "User " + taskData.getTitle() + " registered successfully");
         return "success";
     }
 
-    @RequestMapping(value = { "/cal" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/calendar" }, method = RequestMethod.GET)
     public String showCal(ModelMap model) {
-        NewTaskForm taskForm = new NewTaskForm();
-        model.addAttribute("taskForm", taskForm);
-        model.addAttribute("edit", false);
+
         return "calendar";
     }
 
@@ -116,23 +114,30 @@ public class PlannerController {
         System.out.println(end);
 
         List<TaskData> taskDataList = taskService.getTasksFromInterval(start, end);
-        List<CalendarData> calendarDatas = new ArrayList<CalendarData>();
-        for(TaskData taskData: taskDataList) {
-            calendarDatas.add(new CalendarData(taskData));
-        }
-        String json = new Gson().toJson(calendarDatas);
+        String json = new Gson().toJson(taskDataList);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         return json;
     }
 
-    @RequestMapping(value = "/cal/saveTask", method = RequestMethod.POST)
-    @ResponseBody
-    public void saveTask(@RequestBody String jsonString, Principal principal) throws Exception {
-        Gson gson = new Gson();
-        NewTaskForm taskData = gson.fromJson(jsonString, NewTaskForm.class);
-        taskService.addTask(taskData);
+    @RequestMapping(value = "/tasks/{taskId}", method=RequestMethod.GET)
+    public String editTask(@PathVariable Integer taskId, ModelMap model) {
+        TaskData taskData = taskService.getTaskById(taskId);
+        model.addAttribute("taskData", taskData);
+        model.addAttribute("edit", true);
+        return "editTask";
+    }
 
+    @RequestMapping(value = { "/tasks/{taskId}" }, method = RequestMethod.POST)
+    public String updateTask(@PathVariable Integer taskId,
+                             @ModelAttribute("taskData") TaskData taskData,
+                             BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            return "editTask";
+        }
+        taskService.updateTask(taskData);
+        model.addAttribute("success", "User " + taskData.getTitle() + " registered successfully");
+        return "success";
     }
 
 

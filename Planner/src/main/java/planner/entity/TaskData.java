@@ -1,5 +1,7 @@
 package planner.entity;
 
+import planner.config.Params;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -10,14 +12,28 @@ import java.sql.Timestamp;
 @Table(name = "task", schema = "public", catalog = "planner")
 public class TaskData {
     private Integer id;
+    private String title;
     private Timestamp creationDate;
     private Timestamp modificationDate;
-    private Timestamp startDate;
-    private Timestamp endDate;
+    private Timestamp start;
+    private Timestamp end;
     private String location;
     private String description;
     private Integer ownerId;
-    private String name;
+
+    @Transient
+    private boolean allDay;
+    @Transient
+    private boolean editable;
+    @Transient
+    private boolean durationEditable;
+    @Transient
+    private String color;
+    @Transient
+    private String url;
+    @Transient
+    private String tags;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_id")
@@ -53,22 +69,22 @@ public class TaskData {
 
     @Basic
     @Column(name = "start_date", nullable = true)
-    public Timestamp getStartDate() {
-        return startDate;
+    public Timestamp getStart() {
+        return start;
     }
 
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
+    public void setStart(Timestamp startDate) {
+        this.start = startDate;
     }
 
     @Basic
     @Column(name = "end_date", nullable = true)
-    public Timestamp getEndDate() {
-        return endDate;
+    public Timestamp getEnd() {
+        return end;
     }
 
-    public void setEndDate(Timestamp endDate) {
-        this.endDate = endDate;
+    public void setEnd(Timestamp endDate) {
+        this.end = endDate;
     }
 
     @Basic
@@ -102,13 +118,13 @@ public class TaskData {
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = 50)
-    public String getName() {
-        return name;
+    @Column(name = "title", nullable = true, length = 50)
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
     @Override
@@ -123,8 +139,8 @@ public class TaskData {
             return false;
         if (modificationDate != null ? !modificationDate.equals(taskData.modificationDate) : taskData.modificationDate != null)
             return false;
-        if (startDate != null ? !startDate.equals(taskData.startDate) : taskData.startDate != null) return false;
-        if (endDate != null ? !endDate.equals(taskData.endDate) : taskData.endDate != null) return false;
+        if (start != null ? !start.equals(taskData.start) : taskData.start != null) return false;
+        if (end != null ? !end.equals(taskData.end) : taskData.end != null) return false;
         if (location != null ? !location.equals(taskData.location) : taskData.location != null) return false;
         if (description != null ? !description.equals(taskData.description) : taskData.description != null)
             return false;
@@ -137,12 +153,81 @@ public class TaskData {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
         result = 31 * result + (modificationDate != null ? modificationDate.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + (start != null ? start.hashCode() : 0);
+        result = 31 * result + (end != null ? end.hashCode() : 0);
         result = 31 * result + (location != null ? location.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
 
 
+    @Transient
+    public boolean isAllDay() {
+        return allDay;
+    }
+
+    @Transient
+    public void setAllDay(boolean allDay) {
+        this.allDay = allDay;
+    }
+
+    @Transient
+    public boolean isEditable() {
+        return editable;
+    }
+
+    @Transient
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    @Transient
+    public boolean isDurationEditable() {
+        return durationEditable;
+    }
+
+    @Transient
+    public void setDurationEditable(boolean durationEditable) {
+        this.durationEditable = durationEditable;
+    }
+
+    @Transient
+    public String getColor() {
+        return color;
+    }
+
+    @Transient
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    @Transient
+    public String getUrl() {
+        return url;
+    }
+
+    @Transient
+    public void setUrl() {
+        this.url = Params.TASK_URL + this.id;
+    }
+
+    @Transient
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Transient
+    public String getTags() {
+        return tags;
+    }
+
+    @Transient
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    @Transient
+    public String[] getTagsAsArray() {
+        return tags.split(Params.SEPARATOR);
+    }
 }
