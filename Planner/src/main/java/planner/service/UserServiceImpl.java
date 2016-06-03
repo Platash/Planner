@@ -31,13 +31,16 @@ public class UserServiceImpl implements UserService {
         dao.addUser(user);
     }
 
-
     public void deleteUserById(String id) {
         dao.deleteUserById(id);
     }
 
     public List<UserData> getAllUsers() {
         return dao.getAllUsers();
+    }
+
+    public Integer validateUser(UserData user) {
+        return dao.validateUser(user.getLogin(), user.getPassword()).getId();
     }
 
 }

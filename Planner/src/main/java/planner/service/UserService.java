@@ -18,6 +18,8 @@ public interface UserService {
 
     List<UserData> getAllUsers();
 
+    Integer validateUser(UserData user);
+
 
 }
 

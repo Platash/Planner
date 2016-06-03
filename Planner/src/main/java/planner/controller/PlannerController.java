@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
@@ -15,8 +16,6 @@ import org.springframework.validation.BindingResult;
 
 import planner.entity.TaskData;
 import planner.entity.UserData;
-//import planner.formEntity.CalendarData;
-//import planner.formEntity.NewTaskForm;
 import planner.service.TaskService;
 import planner.service.UserService;
 
@@ -54,8 +53,39 @@ public class PlannerController {
         return "success";
     }
 
+    @RequestMapping(value = { "/login" }, method = RequestMethod.GET)
+    public String showLogin(ModelMap model) {
+        UserData user = new UserData();
+        model.addAttribute("user", user);
+        model.addAttribute("edit", false);
+        return "login";
+    }
 
-    @RequestMapping(value = { "/edit-{id}-user" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/login" }, method = RequestMethod.POST)
+    public String validateUser(@Valid UserData user, HttpServletRequest request,
+                               BindingResult result) {
+        if (result.hasErrors()) {
+            return "login";
+        }
+        Integer id = userService.validateUser(user);
+        if(id != null) {
+            user.setId(id);
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            return "redirect:calendar";
+        } else {
+            return "login";
+        }
+    }
+
+    @RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
+    public String logout(HttpServletRequest request, ModelMap model) {
+        request.getSession().invalidate();
+        model.clear();
+        return "redirect:calendar";
+    }
+
+    @RequestMapping(value = { "/editUser{id}" }, method = RequestMethod.GET)
     public String editEmployee(@PathVariable String id, ModelMap model) {
         UserData user = userService.getUserById(id);
         model.addAttribute("user", user);
@@ -98,22 +128,37 @@ public class PlannerController {
     }
 
     @RequestMapping(value = { "/calendar" }, method = RequestMethod.GET)
-    public String showCal(ModelMap model) {
+    public String showCal(HttpServletRequest request, ModelMap model) {
+        UserData userData = (UserData)request.getSession().getAttribute("user");
+        try {
+            if(userData.getId() != null){
+                return "calendar";
+            } else {
+                return "redirect:login";
+            }
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+            return "redirect:login";
+        }
 
-        return "calendar";
     }
 
     @ResponseBody
     @RequestMapping(value = "/cal/json", method = RequestMethod.GET, params = {"start", "end"})
-
     public String loadTasks(@RequestParam(value = "start") String start,
                             @RequestParam(value = "end") String end,
+                            HttpServletRequest request,
                             HttpServletResponse response) throws Exception {
+        UserData user = (UserData) request.getSession().getAttribute("user");
+        List<TaskData> taskDataList = new ArrayList<TaskData>();
+        try {
+            if(user.getId() != null) {
+                taskDataList = taskService.getTasksFromIntervalByUserId(start, end, user.getId());
 
-        System.out.println(start);
-        System.out.println(end);
-
-        List<TaskData> taskDataList = taskService.getTasksFromInterval(start, end);
+            }
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        }
         String json = new Gson().toJson(taskDataList);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -23,7 +23,6 @@
 	<h2>Registration Form</h2>
  
 	<form:form method="POST" modelAttribute="user">
-		<form:input type="hidden" path="id" id="id"/>
 		<table>
 			<tr>
 				<td><label for="login">login: </label> </td>

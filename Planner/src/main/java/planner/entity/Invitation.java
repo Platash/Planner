@@ -6,9 +6,9 @@ import javax.persistence.*;
  * Created by Anna Platash on 5/8/16.
  */
 @Entity
-@Table(name = "task_user", schema = "public", catalog = "planner")
-@IdClass(TaskUserDataPK.class)
-public class TaskUserData {
+@Table(name = "invitation", schema = "public", catalog = "planner")
+@IdClass(InvitationPK.class)
+public class Invitation {
     private Integer taskId;
     private Integer userId;
     private String status;
@@ -38,7 +38,7 @@ public class TaskUserData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TaskUserData that = (TaskUserData) o;
+        Invitation that = (Invitation) o;
 
         if (taskId != null ? !taskId.equals(that.taskId) : that.taskId != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;

@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by Anna Platash on 5/8/16.
  */
-public class TaskUserDataPK implements Serializable {
+public class InvitationPK implements Serializable {
     private Integer taskId;
     private Integer userId;
 
@@ -36,7 +36,7 @@ public class TaskUserDataPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TaskUserDataPK that = (TaskUserDataPK) o;
+        InvitationPK that = (InvitationPK) o;
 
         if (taskId != null ? !taskId.equals(that.taskId) : that.taskId != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;

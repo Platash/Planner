@@ -54,7 +54,7 @@
     <a class="w3-green" href="newTask">New task</a>
     <a href="calendar">My calendar</a>
     <a href="#">Profile</a>
-    <a href="#">Log out</a>
+    <a href="logout">Log out</a>
 </nav>
 <br>
 <div style="margin-left:25%">
@@ -99,7 +99,7 @@
             </tr>
         </table>
     </form:form>
-</div>
+</div>tables
 <br>
 <div class="w3-container w3-green">
     <h5>Footer</h5>

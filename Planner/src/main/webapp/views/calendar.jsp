@@ -70,17 +70,17 @@
         <h1>Planner</h1>
     </div>
     <br>
-    <div>div>
+    <div>
     <nav class="w3-sidenav w3-light- w3-card-8grey">
         <a href="newTask">New task</a>
         <a class="w3-green" href="calendar">My calendar</a></a>
-        <a href="">Profile</a>
-        <a href="">Log out</a>
+        <a href="editUser">Profile</a>
+        <a href="logout">Log out</a>
     </nav>
     </div>
-    <br>nav>
+    <br>
     <div style="margin-left:25%; margin-right:5%" id='calendar'></div>
-    <br>div>
+    <br>
     <div class="w3-container w3-green">
         <h5>Footer</h5>
     </div>

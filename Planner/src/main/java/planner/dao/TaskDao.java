@@ -75,5 +75,14 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
 
         return query.list();
     }
+
+    public List<TaskData> getTasksFromIntervalByUserId(String start, String end, Integer id) {
+        String start_ = "\'" + start + "\'";
+        String end_ = "\'" + end + "\'";
+        Query query = getSession().createSQLQuery("select * from task where start_date <= " + end_ +
+                " AND end_date >= " + start_ + " AND owner_id = " + id).addEntity(TaskData.class);
+
+        return query.list();
+    }
 }
 

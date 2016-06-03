@@ -54,4 +54,11 @@ public class UserDao extends AbstractDao<Integer, UserData> {
         criteria.add(Restrictions.eq("id", id));
         return (UserData) criteria.uniqueResult();
     }
+
+    public UserData validateUser(String login, String password) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("login", login));
+        criteria.add(Restrictions.eq("password", password));
+        return (UserData) criteria.uniqueResult();
+    }
 }

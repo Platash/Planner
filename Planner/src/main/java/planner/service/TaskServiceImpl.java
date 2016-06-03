@@ -91,4 +91,12 @@ public class TaskServiceImpl implements TaskService {
         return taskDataList;
     }
 
+    public List<TaskData> getTasksFromIntervalByUserId(String start, String end, Integer id) {
+        List<TaskData> taskDataList = taskDao.getTasksFromIntervalByUserId(start, end, id);
+        for(TaskData taskData: taskDataList) {
+            taskData.setUrl();
+        }
+        return taskDataList;
+    }
+
 }

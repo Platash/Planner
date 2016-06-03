@@ -21,4 +21,6 @@ public interface TaskService {
     List<TaskData> getAllTasks();
 
     List<TaskData> getTasksFromInterval(String start, String end);
+
+    List<TaskData> getTasksFromIntervalByUserId(String start, String end, Integer id);
 }
