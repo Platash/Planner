@@ -22,7 +22,7 @@
 
 	<h2>Registration Form</h2>
  
-	<form:form method="POST" modelAttribute="user">
+	<form:form method="POST" modelAttribute="user" onsubmit="return check_pass()">
 		<table>
 			<tr>
 				<td><label for="login">login: </label> </td>
@@ -31,10 +31,14 @@
 		    </tr>
 	    
 			<tr>
-				<td><label for="password">password: </label> </td>
-				<td><form:input path="password" id="password"/></td>
+				<td><label for="password">Password: </label> </td>
+				<td><form:input type="password" path="password" id="password"/></td>
 				<td><form:errors path="password" cssClass="error"/></td>
 		    </tr>
+			<tr>
+				<td><label for="password">Repeat password: </label> </td>
+				<td><input type="password" id="password2"/></td>
+			</tr>
 
 			<tr>
 				<td colspan="3">
@@ -55,3 +59,30 @@
 
 </body>
 </html>
+
+<script>
+	function check_pass() {
+		var pass1 = document.getElementById("password").value;
+		var pass2 = document.getElementById("password2").value;
+		var login = document.getElementById("login").value;
+		var ok = true;
+		if(login == "") {
+			document.getElementById("login").style.borderColor = "#E34234";
+			ok = false;
+		}
+		if(pass1 != pass2) {
+			//alert("Passwords Do not match");
+			document.getElementById("password").style.borderColor = "#E34234";
+			document.getElementById("password2").style.borderColor = "#E34234";
+			ok = false;
+            alert("Passwords doesn't match");
+		}
+		else if(pass1 == ""){
+			document.getElementById("password").style.borderColor = "#E34234";
+			document.getElementById("password2").style.borderColor = "#E34234";
+			ok = false;
+			alert("Password can not be empty");
+		}
+		return ok;
+	}
+</script>

@@ -35,7 +35,7 @@ public class PlannerController {
     @Autowired
     TaskService taskService;
 
-    @RequestMapping(value = { "/" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/registration" }, method = RequestMethod.GET)
     public String newUser(ModelMap model) {
         UserData user = new UserData();
         model.addAttribute("user", user);
@@ -43,7 +43,7 @@ public class PlannerController {
         return "registration";
     }
 
-    @RequestMapping(value = { "/" }, method = RequestMethod.POST)
+    @RequestMapping(value = { "/registration" }, method = RequestMethod.POST)
     public String saveUser(@Valid UserData user, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             return "registration";
@@ -53,7 +53,7 @@ public class PlannerController {
         return "success";
     }
 
-    @RequestMapping(value = { "/login" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/login" }, method = RequestMethod.GET)
     public String showLogin(ModelMap model) {
         UserData user = new UserData();
         model.addAttribute("user", user);
@@ -61,7 +61,7 @@ public class PlannerController {
         return "login";
     }
 
-    @RequestMapping(value = { "/login" }, method = RequestMethod.POST)
+    @RequestMapping(value = {"/", "/login" }, method = RequestMethod.POST)
     public String validateUser(@Valid UserData user, HttpServletRequest request,
                                BindingResult result) {
         if (result.hasErrors()) {
@@ -165,7 +165,7 @@ public class PlannerController {
         return json;
     }
 
-    @RequestMapping(value = "/tasks/{taskId}", method=RequestMethod.GET)
+    @RequestMapping(value = "/tasks_{taskId}", method=RequestMethod.GET)
     public String editTask(@PathVariable Integer taskId, ModelMap model) {
         TaskData taskData = taskService.getTaskById(taskId);
         model.addAttribute("taskData", taskData);
@@ -173,7 +173,7 @@ public class PlannerController {
         return "editTask";
     }
 
-    @RequestMapping(value = { "/tasks/{taskId}" }, method = RequestMethod.POST)
+    @RequestMapping(value = { "/tasks_{taskId}" }, method = RequestMethod.POST)
     public String updateTask(@PathVariable Integer taskId,
                              @ModelAttribute("taskData") TaskData taskData,
                              BindingResult result, ModelMap model) {

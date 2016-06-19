@@ -12,11 +12,11 @@ public interface TaskService {
 
     void updateTask(TaskData task);
 
-    void deleteTaskById(String id);
+    void deleteTaskById(Integer id);
 
     TaskData getTaskById(Integer id);
 
-    List<TaskData> getTasksByUser(String id);
+    List<TaskData> getTasksByUser(Integer id);
 
     List<TaskData> getAllTasks();
 

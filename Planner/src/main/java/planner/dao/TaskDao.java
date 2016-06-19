@@ -34,16 +34,32 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
     }
 
     public void updateTask(TaskData taskData) {
-        Query query = getSession().createSQLQuery("delete from task where id = :id");
+        Query query = getSession().createSQLQuery("update task set " +
+                "title=:title, " +
+                "modification_date=:modificationDate, " +
+                "start_date=:start_date, " +
+                "end_date=:end_date, " +
+                "location=:" + taskData.getLocation() + ", " +
+                "description=:description " +
+                "where id =:id");
+        query.setInteger("id", taskData.getId());
+        query.setString("title", taskData.getTitle());
+        query.setTimestamp("start_date", taskData.getStart());
+        query.setTimestamp("end_date", taskData.getEnd());
+
+        query.setString("description", taskData.getDescription());
+        query.setTimestamp("modificationDate", taskData.getModificationDate());
+
+        query.executeUpdate();
     }
 
     public void delete(TaskData entity) {
         getSession().delete(entity);
     }
 
-    public void deleteTaskById(String id) {
+    public void deleteTaskById(Integer id) {
         Query query = getSession().createSQLQuery("delete from task where id = :id");
-        query.setString("id", id);
+        query.setInteger("id", id);
         query.executeUpdate();
     }
 
@@ -60,7 +76,7 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<TaskData> getTasksByUser(String owner_id) {
+    public List<TaskData> getTasksByUser(Integer owner_id) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("owner_id", owner_id));
         return (List<TaskData>) criteria.list();

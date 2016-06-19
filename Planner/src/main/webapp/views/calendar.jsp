@@ -52,7 +52,7 @@
                 },
                 eventClick: function(event) {
                     if (event.url) {
-                        window.open(event.url);
+                        window.location(event.url);
                         return false;
                     }
                 },

@@ -43,6 +43,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     public void updateTask(TaskData taskData) {
+        taskData.setModificationDate(new Timestamp(new Date().getTime()));
         taskDao.updateTask(taskData);
     }
 
@@ -61,7 +62,7 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    public void deleteTaskById(String id) {
+    public void deleteTaskById(Integer id) {
         taskDao.deleteTaskById(id);
     }
 
@@ -71,7 +72,7 @@ public class TaskServiceImpl implements TaskService {
         return taskData;
     }
 
-    public List<TaskData> getTasksByUser(String id) {
+    public List<TaskData> getTasksByUser(Integer id) {
         List<TaskData> taskDataList = taskDao.getTasksByUser(id);
         for(TaskData taskData: taskDataList) {
             taskData.setUrl();

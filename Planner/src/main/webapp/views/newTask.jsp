@@ -97,7 +97,8 @@
 
         <tr>
             <td colspan="3">
-                <input type="submit" value="submit"/>
+                <input type="submit" class="w3-btn w3-green" value="submit"/>
+                <a class="w3-btn w3-green" href='calendar'>Cancel</a>
 
             </td>
         </tr>
