@@ -42,14 +42,8 @@
 
 			<tr>
 				<td colspan="3">
-					<c:choose>
-						<c:when test="${edit}">
-							<input type="submit" value="update"/>
-						</c:when>
-						<c:otherwise>
-							<input type="submit" value="register"/>
-						</c:otherwise>
-					</c:choose>
+					<input type="submit" value="register"/>
+
 				</td>
 			</tr>
 		</table>

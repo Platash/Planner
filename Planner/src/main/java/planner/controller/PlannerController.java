@@ -85,25 +85,20 @@ public class PlannerController {
         return "redirect:calendar";
     }
 
-    @RequestMapping(value = { "/editUser{id}" }, method = RequestMethod.GET)
-    public String editEmployee(@PathVariable String id, HttpServletRequest request, ModelMap model) {
+    @RequestMapping(value = { "/editUser" }, method = RequestMethod.GET)
+    public String editUser(HttpServletRequest request, ModelMap model) {
         if(checkPermission(request)) {
-            UserData user = userService.getUserById(Integer.valueOf(id));
-            if(user == null) {
-                return "redirect:calendar";
-            }
+            UserData user = (UserData)request.getSession().getAttribute("user");
             model.addAttribute("user", user);
-            model.addAttribute("edit", true);
-            return "registration";
+            return "editUser";
         } else {
-            return "redirect:login";
+            return "redirect:calendar";
         }
     }
 
     @RequestMapping(value = { "/users" }, method = RequestMethod.GET)
     public String showAllUsers(ModelMap model) {
         List users = userService.getAllUsers();
-
         model.addAttribute("users", users);
         return "users";
     }
