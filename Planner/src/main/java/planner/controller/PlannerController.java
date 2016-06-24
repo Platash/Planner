@@ -86,11 +86,18 @@ public class PlannerController {
     }
 
     @RequestMapping(value = { "/editUser{id}" }, method = RequestMethod.GET)
-    public String editEmployee(@PathVariable String id, ModelMap model) {
-        UserData user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("edit", true);
-        return "registration";
+    public String editEmployee(@PathVariable String id, HttpServletRequest request, ModelMap model) {
+        if(checkPermission(request)) {
+            UserData user = userService.getUserById(Integer.valueOf(id));
+            if(user == null) {
+                return "redirect:calendar";
+            }
+            model.addAttribute("user", user);
+            model.addAttribute("edit", true);
+            return "registration";
+        } else {
+            return "redirect:login";
+        }
     }
 
     @RequestMapping(value = { "/users" }, method = RequestMethod.GET)
@@ -101,46 +108,36 @@ public class PlannerController {
         return "users";
     }
 
-    @RequestMapping(value = { "/tasks" }, method = RequestMethod.GET)
-    public String showAllTasks(ModelMap model) {
-        List tasks = taskService.getAllTasks();
-
-        model.addAttribute("tasks", tasks);
-        return "tasks";
-    }
-
     @RequestMapping(value = { "/newTask" }, method = RequestMethod.GET)
-    public String newTask(ModelMap model) {
-        TaskData taskData = new TaskData();
-        model.addAttribute("taskData", taskData);
-        model.addAttribute("edit", false);
-        return "newTask";
+    public String newTask(ModelMap model, HttpServletRequest request) {
+        if(checkPermission(request)) {
+            TaskData taskData = new TaskData();
+            model.addAttribute("taskData", taskData);
+            model.addAttribute("edit", false);
+            return "newTask";
+        } else {
+            return "redirect:login";
+        }
     }
 
     @RequestMapping(value = { "/newTask" }, method = RequestMethod.POST)
-    public String saveTask(@ModelAttribute("taskData") TaskData taskData, BindingResult result, ModelMap model) {
-        if (result.hasErrors()) {
+    public String saveTask(@ModelAttribute("taskData") TaskData taskData,  HttpServletRequest request,
+                           BindingResult result, ModelMap model) {
+        if (result.hasErrors() || !checkPermission(request)) {
             return "newTask";
         }
         taskService.addTask(taskData);
-        model.addAttribute("success", "User " + taskData.getTitle() + " registered successfully");
+        model.addAttribute("success", "Task " + taskData.getTitle() + " created successfully");
         return "success";
     }
 
     @RequestMapping(value = { "/calendar" }, method = RequestMethod.GET)
     public String showCal(HttpServletRequest request, ModelMap model) {
-        UserData userData = (UserData)request.getSession().getAttribute("user");
-        try {
-            if(userData.getId() != null){
-                return "calendar";
-            } else {
-                return "redirect:login";
-            }
-        } catch(NullPointerException e) {
-            e.printStackTrace();
+        if(checkPermission(request)){
+            return "calendar";
+        } else {
             return "redirect:login";
         }
-
     }
 
     @ResponseBody
@@ -149,42 +146,74 @@ public class PlannerController {
                             @RequestParam(value = "end") String end,
                             HttpServletRequest request,
                             HttpServletResponse response) throws Exception {
-        UserData user = (UserData) request.getSession().getAttribute("user");
-        List<TaskData> taskDataList = new ArrayList<TaskData>();
-        try {
-            if(user.getId() != null) {
-                taskDataList = taskService.getTasksFromIntervalByUserId(start, end, user.getId());
+        if(checkPermission(request)){
 
+            UserData user = (UserData) request.getSession().getAttribute("user");
+            List<TaskData> taskDataList = new ArrayList<TaskData>();
+            try {
+                if(user.getId() != null) {
+                    taskDataList = taskService.getTasksFromIntervalByUserId(start, end, user.getId());
+
+                }
+            } catch(NullPointerException e) {
+                e.printStackTrace();
             }
-        } catch(NullPointerException e) {
-            e.printStackTrace();
+            String json = new Gson().toJson(taskDataList);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            return json;
+        } else {
+            return "redirect:login";
         }
-        String json = new Gson().toJson(taskDataList);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        return json;
     }
 
     @RequestMapping(value = "/tasks_{taskId}", method=RequestMethod.GET)
-    public String editTask(@PathVariable Integer taskId, ModelMap model) {
-        TaskData taskData = taskService.getTaskById(taskId);
-        model.addAttribute("taskData", taskData);
-        model.addAttribute("edit", true);
-        return "editTask";
+    public String editTask(@PathVariable Integer taskId, HttpServletRequest request, ModelMap model) {
+        if(checkPermission(request)){
+            TaskData taskData = taskService.getTaskById(taskId);
+            if(taskData == null) {
+                return "redirect:calendar";
+            }
+            UserData userData = (UserData)request.getSession().getAttribute("user");
+            if(userService.checkUserTaskPermission(userData.getId(), taskId)) {
+                model.addAttribute("taskData", taskData);
+                model.addAttribute("edit", true);
+                return "editTask";
+            } else {
+                return "redirect:calendar";
+            }
+        } else {
+            return "redirect:login";
+        }
     }
 
     @RequestMapping(value = { "/tasks_{taskId}" }, method = RequestMethod.POST)
     public String updateTask(@PathVariable Integer taskId,
                              @ModelAttribute("taskData") TaskData taskData,
-                             BindingResult result, ModelMap model) {
-        if (result.hasErrors()) {
+                             BindingResult result, ModelMap model, HttpServletRequest request) {
+        if (result.hasErrors() || !checkPermission(request)) {
             return "editTask";
+        }
+        if(taskData.getId() == null) {
+            taskData.setId(taskId);
         }
         taskService.updateTask(taskData);
         model.addAttribute("success", "User " + taskData.getTitle() + " registered successfully");
         return "success";
     }
 
-
+    private boolean checkPermission(HttpServletRequest request) {
+        UserData userData = (UserData)request.getSession().getAttribute("user");
+        try {
+            if(userData.getId() != null){
+                return true;
+            } else {
+                return false;
+            }
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

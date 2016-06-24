@@ -10,15 +10,17 @@ import planner.entity.UserData;
 
 public interface UserService {
 
-    UserData getUserById(String id);
+    UserData getUserById(Integer id);
 
     void addUser(UserData user);
 
-    void deleteUserById(String id);
+    void deleteUserById(Integer id);
 
     List<UserData> getAllUsers();
 
     Integer validateUser(UserData user);
+
+    boolean checkUserTaskPermission(Integer userId, Integer taskId);
 
 
 }

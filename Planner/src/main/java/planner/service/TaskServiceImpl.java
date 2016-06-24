@@ -10,6 +10,7 @@ import planner.dao.TaskTagDao;
 import planner.entity.TagData;
 import planner.entity.TaskData;
 import planner.entity.TaskTagData;
+import planner.exception.BadSQLException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -62,13 +63,15 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    public void deleteTaskById(Integer id) {
+    public void deleteTaskById(Integer id) throws BadSQLException {
         taskDao.deleteTaskById(id);
     }
 
     public TaskData getTaskById(Integer id) {
         TaskData taskData = taskDao.getTaskById(id);
-        taskData.setUrl();
+        if(taskData != null) {
+            taskData.setUrl();
+        }
         return taskData;
     }
 

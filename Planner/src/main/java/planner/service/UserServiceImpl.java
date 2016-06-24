@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import planner.dao.TaskDao;
 import planner.dao.UserDao;
 import planner.entity.UserData;
 
@@ -20,28 +21,33 @@ import planner.entity.UserData;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserDao dao;
+    private UserDao userDao;
+    @Autowired
+    private TaskDao taskDao;
 
-    public UserData getUserById(String id) {
-        return dao.getUserById(id);
+    public UserData getUserById(Integer id) {
+        return userDao.getUserById(id);
     }
 
     public void addUser(UserData user) {
         user.setCreationDate(new Timestamp(new Date().getTime()));
-        dao.addUser(user);
+        userDao.addUser(user);
     }
 
-    public void deleteUserById(String id) {
-        dao.deleteUserById(id);
+    public void deleteUserById(Integer id) {
+        userDao.deleteUserById(id);
     }
 
     public List<UserData> getAllUsers() {
-        return dao.getAllUsers();
+        return userDao.getAllUsers();
     }
 
     public Integer validateUser(UserData user) {
-        return dao.validateUser(user.getLogin(), user.getPassword()).getId();
+        return userDao.validateUser(user.getLogin(), user.getPassword()).getId();
     }
 
+    public boolean checkUserTaskPermission(Integer userId, Integer taskId){
+        return taskDao.getTaskById(taskId).getOwnerId().equals(userId);
+    }
 }
 

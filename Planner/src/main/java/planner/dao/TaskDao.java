@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import planner.entity.TaskData;
+import planner.exception.BadSQLException;
 
 import java.util.List;
 
@@ -39,14 +40,14 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
                 "modification_date=:modificationDate, " +
                 "start_date=:start_date, " +
                 "end_date=:end_date, " +
-                "location=:" + taskData.getLocation() + ", " +
+                "location=:location, " +
                 "description=:description " +
                 "where id =:id");
         query.setInteger("id", taskData.getId());
         query.setString("title", taskData.getTitle());
         query.setTimestamp("start_date", taskData.getStart());
         query.setTimestamp("end_date", taskData.getEnd());
-
+        query.setString("location", taskData.getLocation());
         query.setString("description", taskData.getDescription());
         query.setTimestamp("modificationDate", taskData.getModificationDate());
 
@@ -57,10 +58,16 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
         getSession().delete(entity);
     }
 
-    public void deleteTaskById(Integer id) {
-        Query query = getSession().createSQLQuery("delete from task where id = :id");
-        query.setInteger("id", id);
-        query.executeUpdate();
+    public void deleteTaskById(Integer id) throws BadSQLException {
+        try {
+            Query query = getSession().createSQLQuery("delete from task where id = :id");
+            query.setInteger("id", id);
+            query.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BadSQLException("Error while trying to delete task, id:" + id);
+        }
+
     }
 
     @SuppressWarnings("unchecked")

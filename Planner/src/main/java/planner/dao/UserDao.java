@@ -37,9 +37,9 @@ public class UserDao extends AbstractDao<Integer, UserData> {
         getSession().delete(entity);
     }
 
-    public void deleteUserById(String id) {
+    public void deleteUserById(Integer id) {
         Query query = getSession().createSQLQuery("delete from \"user\" where id = :id");
-        query.setString("id", id);
+        query.setInteger("id", id);
         query.executeUpdate();
     }
 
@@ -49,7 +49,7 @@ public class UserDao extends AbstractDao<Integer, UserData> {
         return (List<UserData>) criteria.list();
     }
 
-    public UserData getUserById(String id) {
+    public UserData getUserById(Integer id) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("id", id));
         return (UserData) criteria.uniqueResult();
