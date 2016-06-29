@@ -33,7 +33,7 @@
 <br>
 <h2>Log in please:</h2>
 
-<form:form method="POST" modelAttribute="user">
+<form:form method="POST" modelAttribute="user"  onsubmit="return validate_fields()">
     <table>
         <tr>
             <td><label for="login">login: </label> </td>
@@ -65,4 +65,22 @@
 
 </body>
 </html>
+<script>
+    function validate_fields() {
+        var pass = document.getElementById("password").value;
+        var login = document.getElementById("login").value;
+        var ok = true;
+        if(login == "") {
+            document.getElementById("login").style.borderColor = "#E34234";
+            ok = false;
+            alert("Login can not be blanc");
+        }
+        if(pass == ""){
+            document.getElementById("password").style.borderColor = "#E34234";
+            ok = false;
+            alert("Password can not be empty");
+        }
+        return ok;
+    }
+</script>
 

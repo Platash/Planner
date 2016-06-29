@@ -65,7 +65,7 @@ public class PlannerController {
     public String validateUser(@Valid UserData user, HttpServletRequest request,
                                BindingResult result) {
         if (result.hasErrors()) {
-            return "login";
+            return "redirect:login";
         }
         Integer id = userService.validateUser(user);
         if(id != null) {
@@ -74,7 +74,7 @@ public class PlannerController {
             session.setAttribute("user", user);
             return "redirect:calendar";
         } else {
-            return "login";
+            return "redirect:login";
         }
     }
 
@@ -95,6 +95,28 @@ public class PlannerController {
             return "redirect:calendar";
         }
     }
+
+    @RequestMapping(value = { "/editUser" }, method = RequestMethod.POST)
+    public String updateUser(@ModelAttribute("user") UserData userData,
+                             HttpServletRequest request, ModelMap model, BindingResult result) {
+        if (result.hasErrors() || !checkPermission(request)) {
+            return "editUser";
+        }
+        UserData currentUser = (UserData)request.getSession().getAttribute("user");
+        if(request.getParameter("delete") != null) {
+            userService.deleteUserById(currentUser.getId());
+            model.addAttribute("success", "User " + currentUser.getLogin() + " was deleted");
+            return "success";
+        }
+        if(request.getParameter("update") != null) {
+            userService.updateUser(currentUser, userData);
+            model.addAttribute("success", "User " + userData.getLogin() + " updated successfully");
+            return "success";
+        }
+        return "editUser";
+    }
+
+
 
     @RequestMapping(value = { "/users" }, method = RequestMethod.GET)
     public String showAllUsers(ModelMap model) {

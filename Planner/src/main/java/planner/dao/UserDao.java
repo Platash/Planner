@@ -33,14 +33,28 @@ public class UserDao extends AbstractDao<Integer, UserData> {
         getSession().persist(entity);
     }
 
+    public void updateUser(UserData currentUser, UserData userData) {
+        Query query = getSession().createSQLQuery("update \"user\" set " +
+                "name=:name, " +
+                "modification_date=:modificationDate, " +
+                "password=:password " +
+                "where id =:id");
+        query.setInteger("id", userData.getId());
+        query.setString("name", (userData.getName().isEmpty()?currentUser.getName():userData.getName()));
+        query.setString("password", (userData.getPassword().isEmpty()?currentUser.getPassword():userData.getPassword()));
+        query.setTimestamp("modificationDate", userData.getModificationDate());
+
+        query.executeUpdate();
+    }
+
     public void delete(UserData entity) {
         getSession().delete(entity);
     }
 
-    public void deleteUserById(Integer id) {
+    public int deleteUserById(Integer id) {
         Query query = getSession().createSQLQuery("delete from \"user\" where id = :id");
         query.setInteger("id", id);
-        query.executeUpdate();
+        return query.executeUpdate();
     }
 
     @SuppressWarnings("unchecked")

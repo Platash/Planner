@@ -36,14 +36,14 @@
 				<td><form:errors path="password" cssClass="error"/></td>
 		    </tr>
 			<tr>
-				<td><label for="name">name: </label> </td>
-				<td><form:input path="name" id="name"/></td>
-				<td><form:errors path="name" cssClass="error"/></td>
-			</tr>
-			<tr>
 				<td><label for="password">Repeat password: </label> </td>
 				<td><input type="password" id="password2"/></td>
 			</tr>
+            <tr>
+                <td><label for="name">name: </label> </td>
+                <td><form:input path="name" id="name"/></td>
+                <td><form:errors path="name" cssClass="error"/></td>
+            </tr>
 
 			<tr>
 				<td colspan="3">

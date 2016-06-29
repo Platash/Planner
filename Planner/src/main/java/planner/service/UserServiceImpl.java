@@ -34,8 +34,14 @@ public class UserServiceImpl implements UserService {
         userDao.addUser(user);
     }
 
+    public void updateUser(UserData currentUser, UserData userData) {
+        userData.setModificationDate(new Timestamp(new Date().getTime()));
+        userDao.updateUser(currentUser, userData);
+    }
+
     public void deleteUserById(Integer id) {
-        userDao.deleteUserById(id);
+        int result = userDao.deleteUserById(id);
+
     }
 
     public List<UserData> getAllUsers() {
@@ -43,7 +49,16 @@ public class UserServiceImpl implements UserService {
     }
 
     public Integer validateUser(UserData user) {
-        return userDao.validateUser(user.getLogin(), user.getPassword()).getId();
+        if(user.getLogin().isEmpty() || user.getLogin() == null) {
+            return null;
+        }
+        UserData userData = userDao.validateUser(user.getLogin(), user.getPassword());
+        if(userData != null) {
+            return userData.getId();
+        } else {
+            return null;
+        }
+
     }
 
     public boolean checkUserTaskPermission(Integer userId, Integer taskId){

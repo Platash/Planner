@@ -14,6 +14,8 @@ public interface UserService {
 
     void addUser(UserData user);
 
+    void updateUser(UserData currentUser, UserData userData);
+
     void deleteUserById(Integer id);
 
     List<UserData> getAllUsers();

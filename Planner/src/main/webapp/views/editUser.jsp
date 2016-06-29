@@ -67,25 +67,25 @@
                 <td><label>${user.login}<label/></td>
 
             </tr>
-
             <tr>
                 <td><label>User name: </label> </td>
                 <td><form:input path="name" id="name" value="${user.name}"/></td>
                 <td><form:errors path="name" cssClass="error"/></td>
             </tr>
             <tr>
-                <td><label for="password">Password: </label> </td>
+                <td><label for="password">New password: </label> </td>
                 <td><form:input type="password" path="password" id="password"/></td>
                 <td><form:errors path="password" cssClass="error"/></td>
             </tr>
             <tr>
-                <td><label for="password">Repeat password: </label> </td>
+                <td><label for="password">Repeat new password: </label> </td>
                 <td><input type="password" id="password2"/></td>
             </tr>
 
             <tr>
                 <td colspan="3">
-                    <input class="w3-btn w3-green" type="submit" value="submit"/>
+                    <input class="w3-btn w3-green" type="submit" value="update" name="update"/>
+                    <input class="w3-btn w3-red" type="submit" value="delete" name="delete"/>
                     <a class="w3-btn w3-green" href='calendar'>Cancel</a>
                 </td>
             </tr>
