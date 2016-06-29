@@ -19,7 +19,6 @@ import planner.entity.UserData;
 import planner.service.TaskService;
 import planner.service.UserService;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,11 +66,10 @@ public class PlannerController {
         if (result.hasErrors()) {
             return "redirect:login";
         }
-        Integer id = userService.validateUser(user);
-        if(id != null) {
-            user.setId(id);
+        UserData userValidated = userService.validateUser(user);
+        if(userValidated != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+            session.setAttribute("user", userValidated);
             return "redirect:calendar";
         } else {
             return "redirect:login";
@@ -82,7 +80,7 @@ public class PlannerController {
     public String logout(HttpServletRequest request, ModelMap model) {
         request.getSession().invalidate();
         model.clear();
-        return "redirect:calendar";
+        return "redirect:login";
     }
 
     @RequestMapping(value = { "/editUser" }, method = RequestMethod.GET)
@@ -97,21 +95,30 @@ public class PlannerController {
     }
 
     @RequestMapping(value = { "/editUser" }, method = RequestMethod.POST)
-    public String updateUser(@ModelAttribute("user") UserData userData,
+    public String updateUser(@ModelAttribute("user") UserData userDataNew,
                              HttpServletRequest request, ModelMap model, BindingResult result) {
         if (result.hasErrors() || !checkPermission(request)) {
             return "editUser";
         }
         UserData currentUser = (UserData)request.getSession().getAttribute("user");
         if(request.getParameter("delete") != null) {
-            userService.deleteUserById(currentUser.getId());
-            model.addAttribute("success", "User " + currentUser.getLogin() + " was deleted");
-            return "success";
+            int resultCount = userService.deleteUserById(currentUser.getId());
+            if(resultCount == 1) {
+                request.getSession().invalidate();
+                model.clear();
+                return "redirect:logout";
+            }
         }
         if(request.getParameter("update") != null) {
-            userService.updateUser(currentUser, userData);
-            model.addAttribute("success", "User " + userData.getLogin() + " updated successfully");
-            return "success";
+            int resultCount = userService.updateUser(currentUser, userDataNew);
+            if(resultCount == 1) {
+                currentUser.setName(userDataNew.getName());
+                currentUser.setPassword(userDataNew.getPassword());
+                HttpSession session = request.getSession();
+                session.setAttribute("user", currentUser);
+                model.addAttribute("success", "User " + userDataNew.getLogin() + " updated successfully");
+                return "success";
+            }
         }
         return "editUser";
     }

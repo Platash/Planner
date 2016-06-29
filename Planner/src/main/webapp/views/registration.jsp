@@ -78,10 +78,16 @@
 		}
 		else if(pass1 == ""){
 			document.getElementById("password").style.borderColor = "#E34234";
-			document.getElementById("password2").style.borderColor = "#E34234";
+
 			ok = false;
 			alert("Password can not be empty");
 		}
+        if(pass2 == ""){
+
+            document.getElementById("password2").style.borderColor = "#E34234";
+            ok = false;
+            alert("Password can not be empty");
+        }
 		return ok;
 	}
 </script>

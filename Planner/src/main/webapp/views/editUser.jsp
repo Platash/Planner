@@ -60,7 +60,7 @@
 <div style="margin-left:25%">
 
 
-    <form:form method="POST" modelAttribute="user" onsubmit="return check_pass()">
+    <form:form method="POST" modelAttribute="user" onsubmit="return validateFields()">
         <table>
             <tr>
                 <td><label>Login: </label> </td>
@@ -102,15 +102,12 @@
 </html>
 
 <script>
-    function check_pass() {
+    function validateFields() {
         var pass1 = document.getElementById("password").value;
         var pass2 = document.getElementById("password2").value;
-        var login = document.getElementById("login").value;
+
         var ok = true;
-        if(login == "") {
-            document.getElementById("login").style.borderColor = "#E34234";
-            ok = false;
-        }
+
         if(pass1 != pass2) {
             //alert("Passwords Do not match");
             document.getElementById("password").style.borderColor = "#E34234";
@@ -118,8 +115,14 @@
             ok = false;
             alert("Passwords doesn't match");
         }
-        else if(pass1 == ""){
+        if(pass1 == ""){
             document.getElementById("password").style.borderColor = "#E34234";
+
+            ok = false;
+            alert("Password can not be empty");
+        }
+        if(pass2 == ""){
+
             document.getElementById("password2").style.borderColor = "#E34234";
             ok = false;
             alert("Password can not be empty");

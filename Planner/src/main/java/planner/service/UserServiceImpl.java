@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserService {
         userDao.addUser(user);
     }
 
-    public void updateUser(UserData currentUser, UserData userData) {
+    public int updateUser(UserData currentUser, UserData userData) {
         userData.setModificationDate(new Timestamp(new Date().getTime()));
-        userDao.updateUser(currentUser, userData);
+        return userDao.updateUser(currentUser, userData);
     }
 
-    public void deleteUserById(Integer id) {
-        int result = userDao.deleteUserById(id);
+    public int deleteUserById(Integer id) {
+        return userDao.deleteUserById(id);
 
     }
 
@@ -48,16 +48,11 @@ public class UserServiceImpl implements UserService {
         return userDao.getAllUsers();
     }
 
-    public Integer validateUser(UserData user) {
+    public UserData validateUser(UserData user) {
         if(user.getLogin().isEmpty() || user.getLogin() == null) {
             return null;
         }
-        UserData userData = userDao.validateUser(user.getLogin(), user.getPassword());
-        if(userData != null) {
-            return userData.getId();
-        } else {
-            return null;
-        }
+        return userDao.validateUser(user.getLogin(), user.getPassword());
 
     }
 

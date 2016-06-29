@@ -14,13 +14,13 @@ public interface UserService {
 
     void addUser(UserData user);
 
-    void updateUser(UserData currentUser, UserData userData);
+    int updateUser(UserData currentUser, UserData userData);
 
-    void deleteUserById(Integer id);
+    int deleteUserById(Integer id);
 
     List<UserData> getAllUsers();
 
-    Integer validateUser(UserData user);
+    UserData validateUser(UserData user);
 
     boolean checkUserTaskPermission(Integer userId, Integer taskId);
 

@@ -58,7 +58,7 @@
 </nav>
 <br>
 <div style="margin-left:25%">
-    <form:form method="POST" modelAttribute="taskData">
+    <form:form method="POST" modelAttribute="taskData" onsubmit="return validateFields()">
         <table>
             <tr>
                 <td><label>Name: </label> </td>
@@ -108,3 +108,22 @@
 
 </body>
 </html>
+
+<script>
+    function validateFields() {
+        var start = document.getElementById("start").value;
+        var end  = document.getElementById("end").value;
+
+        var ok = true;
+        if(start == "") {
+            document.getElementById("start").style.borderColor = "#E34234";
+            ok = false;
+        }
+        if(end == "") {
+            document.getElementById("end").style.borderColor = "#E34234";
+            ok = false;
+        }
+
+        return ok;
+    }
+</script>
