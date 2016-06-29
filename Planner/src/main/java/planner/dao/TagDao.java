@@ -35,7 +35,7 @@ public class TagDao extends AbstractDao<Integer, TagData> {
         getSession().delete(entity);
     }
 
-    public void deleteTaskByName(String name) {
+    public void deleteTagByName(String name) {
         Query query = getSession().createSQLQuery("delete from tag where name = :name");
         query.setString("name", name);
         query.executeUpdate();

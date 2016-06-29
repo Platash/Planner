@@ -119,15 +119,16 @@ public class PlannerController {
     public String saveTask(@ModelAttribute("taskData") TaskData taskData,  HttpServletRequest request,
                            BindingResult result, ModelMap model) {
         if (result.hasErrors() || !checkPermission(request)) {
-            return "newTask";
+            return "redirect:newTask";
         }
-        taskService.addTask(taskData);
+        int userId = ((UserData)request.getSession().getAttribute("user")).getId();
+        taskService.addTask(taskData, userId);
         model.addAttribute("success", "Task " + taskData.getTitle() + " created successfully");
         return "success";
     }
 
     @RequestMapping(value = { "/calendar" }, method = RequestMethod.GET)
-    public String showCal(HttpServletRequest request, ModelMap model) {
+    public String showCal(HttpServletRequest request) {
         if(checkPermission(request)){
             return "calendar";
         } else {
@@ -189,12 +190,23 @@ public class PlannerController {
         if (result.hasErrors() || !checkPermission(request)) {
             return "editTask";
         }
-        if(taskData.getId() == null) {
-            taskData.setId(taskId);
+        if(request.getParameter("delete") != null) {
+            if(taskData.getId() == null) {
+                taskData.setId(taskId);
+            }
+            taskService.deleteTaskById(taskId);
+            model.addAttribute("success", "User " + taskData.getTitle() + " was deleted");
+            return "success";
         }
-        taskService.updateTask(taskData);
-        model.addAttribute("success", "User " + taskData.getTitle() + " registered successfully");
-        return "success";
+        if(request.getParameter("update") != null) {
+            if(taskData.getId() == null) {
+                taskData.setId(taskId);
+            }
+            taskService.updateTask(taskData);
+            model.addAttribute("success", "User " + taskData.getTitle() + " updated successfully");
+            return "success";
+        }
+        return "editTask";
     }
 
     private boolean checkPermission(HttpServletRequest request) {
@@ -206,7 +218,7 @@ public class PlannerController {
                 return false;
             }
         } catch(NullPointerException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return false;
         }
     }

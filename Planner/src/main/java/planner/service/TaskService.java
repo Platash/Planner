@@ -1,7 +1,6 @@
 package planner.service;
 
 import planner.entity.TaskData;
-import planner.exception.BadSQLException;
 
 import java.util.List;
 
@@ -9,11 +8,11 @@ import java.util.List;
  * Created by Anna Platash on 5/8/16.
  */
 public interface TaskService {
-    void addTask(TaskData task);
+    void addTask(TaskData task, int ownerId);
 
     void updateTask(TaskData task);
 
-    void deleteTaskById(Integer id) throws BadSQLException;
+    void deleteTaskById(Integer id);
 
     TaskData getTaskById(Integer id);
 

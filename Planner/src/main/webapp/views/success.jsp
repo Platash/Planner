@@ -40,7 +40,7 @@
         </nav>
     </div>
     <br>
-    <div style="margin-left:25%; margin-right:5%"> Success. You will be redirected to the calendar page in <label id="countDown">5</label>
+    <div style="margin-left:25%; margin-right:5%"> Success. You will be redirected to the calendar page in <label id="countDown">3</label>
         sec.</div>
     <br>
     <div class="w3-container w3-green">
@@ -51,7 +51,7 @@
 
 </html>
 <script>
-    var count = 5;
+    var count = 3;
     setInterval(function(){
         count--;
         document.getElementById('countDown').innerHTML = count;

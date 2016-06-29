@@ -58,14 +58,14 @@ public class TaskDao extends AbstractDao<Integer, TaskData> {
         getSession().delete(entity);
     }
 
-    public void deleteTaskById(Integer id) throws BadSQLException {
+    public void deleteTaskById(Integer id) {
         try {
             Query query = getSession().createSQLQuery("delete from task where id = :id");
             query.setInteger("id", id);
             query.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BadSQLException("Error while trying to delete task, id:" + id);
+
         }
 
     }

@@ -34,9 +34,9 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TagDao tagDao;
 
-    public void addTask(TaskData taskData) {
+    public void addTask(TaskData taskData, int ownerId) {
         taskData.setCreationDate(new Timestamp(new Date().getTime()));
-        taskData.setOwnerId(3);
+        taskData.setOwnerId(ownerId);
         Integer taskId = taskDao.addTask(taskData);
         if(!taskData.getTags().isEmpty()) {
             addTaskTags(taskData.getTagsAsArray(), taskId);
@@ -63,7 +63,8 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    public void deleteTaskById(Integer id) throws BadSQLException {
+    public void deleteTaskById(Integer id) {
+        taskTagDao.deleteByTaskId(id);
         taskDao.deleteTaskById(id);
     }
 

@@ -1,5 +1,6 @@
 package planner.dao;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,15 @@ public class TaskTagDao extends AbstractDao<Integer, TaskTagData> {
         getSession().persist(entity);
         getSession().flush();
         return entity.getTaskId();
+    }
+
+    public void deleteByTaskId(Integer id) {
+        try {
+            Query query = getSession().createSQLQuery("delete from task_tag where task_id = :id");
+            query.setInteger("id", id);
+            query.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

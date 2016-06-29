@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Edit task</title>
+    <title>Edit user</title>
 
     <spring:url value="/resources/js/jquery-ui.css" var="uiCSS" />
     <spring:url value="/resources/css/jquery-ui-timepicker-addon.css" var="tpCSS" />
@@ -51,60 +51,79 @@
 </div>
 <br>
 <nav class="w3-sidenav w3-light-grey w3-card-8">
-    <a class="w3-green" href="newTask">New task</a>
+    <a href="newTask">New task</a>
     <a href="calendar">My calendar</a>
-    <a href="#">Profile</a>
+    <a class="w3-green" href="#">Profile</a>
     <a href="logout">Log out</a>
 </nav>
 <br>
 <div style="margin-left:25%">
-    <form:form method="POST" modelAttribute="taskData">
+
+
+    <form:form method="POST" modelAttribute="user" onsubmit="return check_pass()">
         <table>
             <tr>
-                <td><label>Name: </label> </td>
-                <td><form:input path="title" id="title" value="${taskData.title}"/></td>
-                <td><form:errors path="title" cssClass="error"/></td>
+                <td><label>Login: </label> </td>
+                <td><label>${user.login}<label/></td>
+
+            </tr>
+
+            <tr>
+                <td><label>User name: </label> </td>
+                <td><form:input path="name" id="name" value="${user.name}"/></td>
+                <td><form:errors path="name" cssClass="error"/></td>
             </tr>
             <tr>
-                <td><label>Start date: </label> </td>
-                <td><form:input path="start" id="start" value="${taskData.start}"/></td>
-                <td><form:errors path="start" cssClass="error"/></td>
+                <td><label for="password">Password: </label> </td>
+                <td><form:input type="password" path="password" id="password"/></td>
+                <td><form:errors path="password" cssClass="error"/></td>
             </tr>
             <tr>
-                <td><label>End date: </label> </td>
-                <td><form:input path="end" id="end" value="${taskData.end}"/></td>
-                <td><form:errors path="end" cssClass="error"/></td>
-            </tr>
-            <tr>
-                <td><label>Location: </label> </td>
-                <td><form:input path="location" id="location"/></td>
-                <td><form:errors path="location" cssClass="error"/></td>
-            </tr>
-            <tr>
-                <td><label>Description: </label> </td>
-                <td><form:input path="description" id="description"/></td>
-                <td><form:errors path="description" cssClass="error"/></td>
-            </tr>
-            <tr>
-                <td><label>Tags separated by #: </label> </td>
-                <td><form:input path="tags" id="tags"/></td>
-                <td><form:errors path="tags" cssClass="error"/></td>
+                <td><label for="password">Repeat password: </label> </td>
+                <td><input type="password" id="password2"/></td>
             </tr>
 
             <tr>
                 <td colspan="3">
-                    <input class="w3-btn w3-green" type="submit" value="submit" name="update"/>
-                    <input class="w3-btn w3-red" type="submit" value="delete" name="delete"/>
+                    <input class="w3-btn w3-green" type="submit" value="submit"/>
                     <a class="w3-btn w3-green" href='calendar'>Cancel</a>
                 </td>
             </tr>
         </table>
     </form:form>
+
+
 </div>tables
 <br>
 <div class="w3-container w3-green">
     <h5>Footer</h5>
 </div>
-
 </body>
 </html>
+
+<script>
+    function check_pass() {
+        var pass1 = document.getElementById("password").value;
+        var pass2 = document.getElementById("password2").value;
+        var login = document.getElementById("login").value;
+        var ok = true;
+        if(login == "") {
+            document.getElementById("login").style.borderColor = "#E34234";
+            ok = false;
+        }
+        if(pass1 != pass2) {
+            //alert("Passwords Do not match");
+            document.getElementById("password").style.borderColor = "#E34234";
+            document.getElementById("password2").style.borderColor = "#E34234";
+            ok = false;
+            alert("Passwords doesn't match");
+        }
+        else if(pass1 == ""){
+            document.getElementById("password").style.borderColor = "#E34234";
+            document.getElementById("password2").style.borderColor = "#E34234";
+            ok = false;
+            alert("Password can not be empty");
+        }
+        return ok;
+    }
+</script>
